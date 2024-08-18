@@ -1,0 +1,48 @@
+1, 'wheat fields', 0, 'wheat fields', 0
+2, 'wheat fields', 0, 'wheat fields', 0
+3, 'forests', 0, 'forests', 0
+4, 'forests', 0, 'forests', 0
+5, 'forests', 0, 'forests', 0
+6, 'forests', 0, 'forests', 0
+7, 'lakes', 0, 'lakes', 0
+8, 'lakes', 0, 'lakes', 0
+9, 'lakes', 0, 'lakes', 0
+10, 'grasslands', 0, 'grasslands', 0
+11, 'grasslands', 0, 'grasslands', 0
+12, 'swamps', 0, 'swamps', 0
+13, 'wheat fields', 0, 'forests', 0
+14, 'wheat fields', 0, 'lakes', 0
+15, 'wheat fields', 0, 'grasslands', 0
+16, 'wheat fields', 0, 'swamps', 0
+17, 'forests', 0, 'lakes', 0
+18, 'forests', 0, 'grasslands', 0
+19, 'wheat fields', 0, 'forests', 0
+20, 'wheat fields', 0, 'lakes', 0
+21, 'wheat fields', 0, 'grasslands', 0
+22, 'wheat fields', 0, 'swamps', 0
+23, 'wheat fields', 0, 'mines', 0
+24, 'forests', 0, 'wheat fields', 0
+25, 'forests', 0, 'wheat fields', 0
+26, 'forests', 0, 'wheat fields', 0
+27, 'forests', 0, 'wheat fields', 0
+28, 'forests', 0, 'lakes', 0
+29, 'forests', 0, 'grasslands', 0
+30, 'lakes', 0, 'wheat fields', 0
+31, 'lakes', 0, 'wheat fields', 0
+32, 'lakes', 0, 'forests', 0
+33, 'lakes', 0, 'forests', 0
+34, 'lakes', 0, 'forests', 0
+35, 'lakes', 0, 'forests', 0
+36, 'wheat fields', 1, 'grasslands', 1
+37, 'lakes', 1, 'grasslands', 1
+38, 'wheat fields', 1, 'swamps', 1
+39, 'grasslands', 1, 'swamps', 1
+40, 'mines', 0, 'wheat fields', 0
+41, 'wheat fields', 2, 'grasslands', 2
+42, 'lakes', 2, 'grasslands', 2
+43, 'wheat fields', 2, 'swamps', 2
+44, 'grasslands', 2, 'swamps', 2
+45, 'mines', 0, 'wheat fields', 0
+46, 'swamps', 2, 'mines', 2
+47, 'swamps', 2, 'mines', 2
+48, 'wheat fields', 3, 'mines', 3
