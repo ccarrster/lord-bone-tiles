@@ -19,59 +19,66 @@ class domain{
   }
 }
 
-var index = 1;
+/********************* Domino setup and test */
+
+
 var terrainTypes = ['wheat fields', 'forests', 'lakes', 'grasslands', 'swamps', 'mines'];
 
-var dominos = [
-  new domino(index++, new terrain('wheat fields'), new terrain('wheat fields')),
-  new domino(index++, new terrain('wheat fields'), new terrain('wheat fields')),
-  new domino(index++, new terrain('forests'), new terrain('forests')),
-  new domino(index++, new terrain('forests'), new terrain('forests')),
-  new domino(index++, new terrain('forests'), new terrain('forests')),
-  new domino(index++, new terrain('forests'), new terrain('forests')),
-  new domino(index++, new terrain('lakes'), new terrain('lakes')),
-  new domino(index++, new terrain('lakes'), new terrain('lakes')),
-  new domino(index++, new terrain('lakes'), new terrain('lakes')),
-  new domino(index++, new terrain('grasslands'), new terrain('grasslands')),
-  new domino(index++, new terrain('grasslands'), new terrain('grasslands')),
-  new domino(index++, new terrain('swamps'), new terrain('swamps')),
-  new domino(index++, new terrain('wheat fields'), new terrain('forests')),
-  new domino(index++, new terrain('wheat fields'), new terrain('lakes')),
-  new domino(index++, new terrain('wheat fields'), new terrain('grasslands')),
-  new domino(index++, new terrain('wheat fields'), new terrain('swamps')),
-  new domino(index++, new terrain('forests'), new terrain('lakes')),
-  new domino(index++, new terrain('forests'), new terrain('grasslands')),
-  new domino(index++, new terrain('wheat fields', 1), new terrain('forests')),
-  new domino(index++, new terrain('wheat fields', 1), new terrain('lakes')),
-  new domino(index++, new terrain('wheat fields', 1), new terrain('grasslands')),
-  new domino(index++, new terrain('wheat fields', 1), new terrain('swamps')),
-  new domino(index++, new terrain('wheat fields', 1), new terrain('mines')),
-  new domino(index++, new terrain('forests', 1), new terrain('wheat fields')),
-  new domino(index++, new terrain('forests', 1), new terrain('wheat fields')),
-  new domino(index++, new terrain('forests', 1), new terrain('wheat fields')),
-  new domino(index++, new terrain('forests', 1), new terrain('wheat fields')),
-  new domino(index++, new terrain('forests', 1), new terrain('lakes')),
-  new domino(index++, new terrain('forests', 1), new terrain('grasslands')),
-  new domino(index++, new terrain('lakes', 1), new terrain('wheat fields')),
-  new domino(index++, new terrain('lakes', 1), new terrain('wheat fields')),
-  new domino(index++, new terrain('lakes', 1), new terrain('forests')),
-  new domino(index++, new terrain('lakes', 1), new terrain('forests')),
-  new domino(index++, new terrain('lakes', 1), new terrain('forests')),
-  new domino(index++, new terrain('lakes', 1), new terrain('forests')),
-  new domino(index++, new terrain('wheat fields'), new terrain('grasslands', 1)),
-  new domino(index++, new terrain('lakes'), new terrain('grasslands', 1)),
-  new domino(index++, new terrain('wheat fields'), new terrain('swamps', 1)),
-  new domino(index++, new terrain('grasslands'), new terrain('swamps', 1)),
-  new domino(index++, new terrain('mines', 1), new terrain('wheat fields')),
-  new domino(index++, new terrain('wheat fields'), new terrain('grasslands', 2)),
-  new domino(index++, new terrain('lakes'), new terrain('grasslands', 2)),
-  new domino(index++, new terrain('wheat fields'), new terrain('swamps', 2)),
-  new domino(index++, new terrain('grasslands'), new terrain('swamps', 2)),
-  new domino(index++, new terrain('mines', 2), new terrain('wheat fields')),
-  new domino(index++, new terrain('swamps'), new terrain('mines', 2)),
-  new domino(index++, new terrain('swamps'), new terrain('mines', 2)),
-  new domino(index++, new terrain('wheat fields'), new terrain('mines', 3))
-];
+function resetDominos(){
+  var index = 1;
+  return [
+    new domino(index++, new terrain('wheat fields'), new terrain('wheat fields')),
+    new domino(index++, new terrain('wheat fields'), new terrain('wheat fields')),
+    new domino(index++, new terrain('forests'), new terrain('forests')),
+    new domino(index++, new terrain('forests'), new terrain('forests')),
+    new domino(index++, new terrain('forests'), new terrain('forests')),
+    new domino(index++, new terrain('forests'), new terrain('forests')),
+    new domino(index++, new terrain('lakes'), new terrain('lakes')),
+    new domino(index++, new terrain('lakes'), new terrain('lakes')),
+    new domino(index++, new terrain('lakes'), new terrain('lakes')),
+    new domino(index++, new terrain('grasslands'), new terrain('grasslands')),
+    new domino(index++, new terrain('grasslands'), new terrain('grasslands')),
+    new domino(index++, new terrain('swamps'), new terrain('swamps')),
+    new domino(index++, new terrain('wheat fields'), new terrain('forests')),
+    new domino(index++, new terrain('wheat fields'), new terrain('lakes')),
+    new domino(index++, new terrain('wheat fields'), new terrain('grasslands')),
+    new domino(index++, new terrain('wheat fields'), new terrain('swamps')),
+    new domino(index++, new terrain('forests'), new terrain('lakes')),
+    new domino(index++, new terrain('forests'), new terrain('grasslands')),
+    new domino(index++, new terrain('wheat fields', 1), new terrain('forests')),
+    new domino(index++, new terrain('wheat fields', 1), new terrain('lakes')),
+    new domino(index++, new terrain('wheat fields', 1), new terrain('grasslands')),
+    new domino(index++, new terrain('wheat fields', 1), new terrain('swamps')),
+    new domino(index++, new terrain('wheat fields', 1), new terrain('mines')),
+    new domino(index++, new terrain('forests', 1), new terrain('wheat fields')),
+    new domino(index++, new terrain('forests', 1), new terrain('wheat fields')),
+    new domino(index++, new terrain('forests', 1), new terrain('wheat fields')),
+    new domino(index++, new terrain('forests', 1), new terrain('wheat fields')),
+    new domino(index++, new terrain('forests', 1), new terrain('lakes')),
+    new domino(index++, new terrain('forests', 1), new terrain('grasslands')),
+    new domino(index++, new terrain('lakes', 1), new terrain('wheat fields')),
+    new domino(index++, new terrain('lakes', 1), new terrain('wheat fields')),
+    new domino(index++, new terrain('lakes', 1), new terrain('forests')),
+    new domino(index++, new terrain('lakes', 1), new terrain('forests')),
+    new domino(index++, new terrain('lakes', 1), new terrain('forests')),
+    new domino(index++, new terrain('lakes', 1), new terrain('forests')),
+    new domino(index++, new terrain('wheat fields'), new terrain('grasslands', 1)),
+    new domino(index++, new terrain('lakes'), new terrain('grasslands', 1)),
+    new domino(index++, new terrain('wheat fields'), new terrain('swamps', 1)),
+    new domino(index++, new terrain('grasslands'), new terrain('swamps', 1)),
+    new domino(index++, new terrain('mines', 1), new terrain('wheat fields')),
+    new domino(index++, new terrain('wheat fields'), new terrain('grasslands', 2)),
+    new domino(index++, new terrain('lakes'), new terrain('grasslands', 2)),
+    new domino(index++, new terrain('wheat fields'), new terrain('swamps', 2)),
+    new domino(index++, new terrain('grasslands'), new terrain('swamps', 2)),
+    new domino(index++, new terrain('mines', 2), new terrain('wheat fields')),
+    new domino(index++, new terrain('swamps'), new terrain('mines', 2)),
+    new domino(index++, new terrain('swamps'), new terrain('mines', 2)),
+    new domino(index++, new terrain('wheat fields'), new terrain('mines', 3))
+  ];
+}
+
+var dominos = resetDominos();
 
 //console.log(dominos);
 
@@ -101,41 +108,52 @@ dominos.forEach((domino) => {
 
 //console.log(csv);
 
-var root = [new domain(0, 0, new terrain('castle'))];
+
+//****************** Domains */
+
+var root = resetPlayerDomain();
+
+function resetPlayerDomain(){
+  return [new domain(0, 0, new terrain('castle'))];
+}
 
 var testDomino = dominos[0];
 
 var newDomains = [new domain(1, 0, testDomino.leftTerrain), new domain(2, 0, testDomino.rightTerrain)];
 
-if(canPlace(root, newDomains)){
-  console.log(root);
-  root = place(root, newDomains);
-  console.log(root);
+var result;
+
+result = place(root, newDomains);
+if(result != false){
+  root = result;
 }
+
 
 var testDomino2 = dominos[46];
 
 var newDomains2 = [new domain(-2, 0, testDomino2.leftTerrain), new domain(-1, 0, testDomino2.rightTerrain)];
 
-if(canPlace(root, newDomains2)){
-  console.log(root);
-  root = place(root, newDomains2);
-  console.log(root);
+result = place(root, newDomains2);
+if(result != false){
+  root = result;
 }
+
 
 var testDomino3 = dominos[1];
 
 var newDomains3 = [new domain(2, 1, testDomino3.leftTerrain), new domain(1, 1, testDomino3.rightTerrain)];
 
-if(canPlace(root, newDomains3)){
-  console.log(root);
-  root = place(root, newDomains3);
-  console.log(root);
+result = place(root, newDomains3);
+if(result != false){
+  root = result;
 }
 
-
 function place(domains, newDomains){
-  return domains.concat(newDomains);
+  if(canPlace(domains, newDomains)){
+    return domains.concat(newDomains);
+  } else {
+    return false;
+  }
 }
 
 function canPlace(existingDomains, newDomains){
@@ -209,7 +227,6 @@ function canPlace(existingDomains, newDomains){
     validPlacement = false;
   }
   if(validPlacement == true){
-    console.log('That looks like it will work.');
     return true;
   } else {
     console.log(placmentErrors);
@@ -268,3 +285,62 @@ function drawIt(domains){
 }
 
 drawIt(root);
+
+function score(domain){
+  var scoreSummary = [];
+  clearVisisted(domain);
+  domain.forEach((domainTile) => {
+    scoreSummary.push(scoreTerrain(domainTile, new terrainGroupScore(domainTile, domain)));
+  })
+  return scoreSummary;
+}
+
+class terrainGroupScore {
+  constructor(domainTile, domain){
+    this.terrain = domainTile.terrain.terrain;
+    this.crowns = 0;
+    this.count = 0;
+    this.domain = domain;
+  }
+}
+
+//Recursive end if empty or visited
+//If a terrain match score and try to score the adjacent domains
+function scoreTerrain(domain, terrainGroupScore){
+  if(domain.length == 0){
+    return terrainGroupScore;
+  }
+  if(domain.visited == true){
+    return terrainGroupScore;
+  }
+  if(domain.terrain.terrain == terrainGroupScore.terrain){
+    domain.visited = true;
+    terrainGroupScore.count += 1;
+    terrainGroupScore.crowns += domain.terrain.crowns;
+    terrainGroupScore = scoreTerrain(findTerrain(terrainGroupScore.domain, domain.x + 1, domain.y), terrainGroupScore);
+    terrainGroupScore = scoreTerrain(findTerrain(terrainGroupScore.domain, domain.x - 1, domain.y), terrainGroupScore);
+    terrainGroupScore = scoreTerrain(findTerrain(terrainGroupScore.domain, domain.x, domain.y + 1), terrainGroupScore);
+    terrainGroupScore = scoreTerrain(findTerrain(terrainGroupScore.domain, domain.x, domain.y - 1), terrainGroupScore);
+  }
+  return terrainGroupScore;
+}
+
+function findTerrain(domains, x, y){
+  var setDomain = domains.filter((domain) => {
+    if(domain.x == x && domain.y == y){
+      return true;
+    }
+  });
+  if(setDomain.length > 0){
+    return setDomain[0];
+  }
+  return setDomain;
+}
+
+function clearVisisted(domain){
+  domain.forEach((domainTile) => {
+    domainTile.visited = false;
+  }) 
+}
+
+console.log(score(root));
