@@ -292,6 +292,7 @@ function score(domain){
   domain.forEach((domainTile) => {
     scoreSummary.push(scoreTerrain(domainTile, new terrainGroupScore(domainTile, domain)));
   })
+  clearVisisted(domain);
   return scoreSummary;
 }
 
@@ -344,3 +345,114 @@ function clearVisisted(domain){
 }
 
 console.log(score(root));
+
+function takeRandomDomino(){
+  var result = dominos.splice(Math.floor(Math.random() * dominos.length), 1);
+  return result[0];
+}
+
+//This takes from the dominos
+var randomDomino = takeRandomDomino();
+
+class locationXY{
+  constructor(x, y){
+    this.x = x;
+    this.y = y;
+  }
+}
+
+function getValidPlacements(dominion, domino){
+  var emptyAdjacentLeft = [];
+  var emptyAdjacentRight = [];
+  var placementLeft = [];
+  var placementRight = [];
+  dominion.forEach((dominionTile) => {
+    if(dominionTile.terrain.terrain == domino.leftTerrain.terrain || dominionTile.terrain.terrain == 'castle'){
+      console.log('Left will match sides with ' + dominionTile.terrain.terrain + ' ' + dominionTile.x + ', ' + dominionTile.y);
+      var right = findTerrain(dominion, dominionTile.x + 1, dominionTile.y);
+      var left = findTerrain(dominion, dominionTile.x - 1, dominionTile.y);
+      var up = findTerrain(dominion, dominionTile.x, dominionTile.y + 1);
+      var down = findTerrain(dominion, dominionTile.x, dominionTile.y - 1);
+      if(right.length == 0){
+        emptyAdjacentLeft.push(new locationXY(dominionTile.x + 1, dominionTile.y));
+      }
+      if(left.length == 0){
+        emptyAdjacentLeft.push(new locationXY(dominionTile.x - 1, dominionTile.y));
+      }
+      if(up.length == 0){
+        emptyAdjacentLeft.push(new locationXY(dominionTile.x, dominionTile.y + 1));
+      }
+      if(down.length == 0){
+        emptyAdjacentLeft.push(new locationXY(dominionTile.x, dominionTile.y - 1));
+      }
+    }
+    if(domino.rightTerrain.terrain != domino.leftTerrain.terrain && (dominionTile.terrain.terrain == domino.rightTerrain.terrain || dominionTile.terrain.terrain == 'castle')){
+      console.log('Right will match sides with ' + dominionTile.terrain.terrain + ' ' + dominionTile.x + ', ' + dominionTile.y);
+      var right = findTerrain(dominion, dominionTile.x + 1, dominionTile.y);
+      var left = findTerrain(dominion, dominionTile.x - 1, dominionTile.y);
+      var up = findTerrain(dominion, dominionTile.x, dominionTile.y + 1);
+      var down = findTerrain(dominion, dominionTile.x, dominionTile.y - 1);
+      if(right.length == 0){
+        emptyAdjacentRight.push(new locationXY(dominionTile.x + 1, dominionTile.y));
+      }
+      if(left.length == 0){
+        emptyAdjacentRight.push(new locationXY(dominionTile.x - 1, dominionTile.y));
+      }
+      if(up.length == 0){
+        emptyAdjacentRight.push(new locationXY(dominionTile.x, dominionTile.y + 1));
+      }
+      if(down.length == 0){
+        emptyAdjacentRight.push(new locationXY(dominionTile.x, dominionTile.y - 1));
+      }
+    }
+  });
+  var placementOptions = [];
+  emptyAdjacentLeft.forEach((emptyLocation) => {
+    var right = findTerrain(dominion, emptyLocation.x + 1, emptyLocation.y);
+    var left = findTerrain(dominion, emptyLocation.x - 1, emptyLocation.y);
+    var up = findTerrain(dominion, emptyLocation.x, emptyLocation.y + 1);
+    var down = findTerrain(dominion, emptyLocation.x, emptyLocation.y - 1);
+    if(right.length == 0){
+      placementOptions.push([new domain(emptyLocation.x, emptyLocation.y, domino.leftTerrain), new domain(emptyLocation.x + 1, emptyLocation.y, domino.rightTerrain)]);
+    }
+    if(left.length == 0){
+      placementOptions.push([new domain(emptyLocation.x, emptyLocation.y, domino.leftTerrain), new domain(emptyLocation.x - 1, emptyLocation.y, domino.rightTerrain)]);
+    }
+    if(up.length == 0){
+      placementOptions.push([new domain(emptyLocation.x, emptyLocation.y, domino.leftTerrain), new domain(emptyLocation.x, emptyLocation.y + 1, domino.rightTerrain)]);
+    }
+    if(down.length == 0){
+      placementOptions.push([new domain(emptyLocation.x, emptyLocation.y, domino.leftTerrain), new domain(emptyLocation.x, emptyLocation.y - 1, domino.rightTerrain)]);
+    }
+  });
+  emptyAdjacentRight.forEach((emptyLocation) => {
+    var right = findTerrain(dominion, emptyLocation.x + 1, emptyLocation.y);
+    var left = findTerrain(dominion, emptyLocation.x - 1, emptyLocation.y);
+    var up = findTerrain(dominion, emptyLocation.x, emptyLocation.y + 1);
+    var down = findTerrain(dominion, emptyLocation.x, emptyLocation.y - 1);
+    if(right.length == 0){
+      placementOptions.push([new domain(emptyLocation.x, emptyLocation.y, domino.rightTerrain), new domain(emptyLocation.x + 1, emptyLocation.y, domino.leftTerrain)]);
+    }
+    if(left.length == 0){
+      placementOptions.push([new domain(emptyLocation.x, emptyLocation.y, domino.rightTerrain), new domain(emptyLocation.x - 1, emptyLocation.y, domino.leftTerrain)]);
+    }
+    if(up.length == 0){
+      placementOptions.push([new domain(emptyLocation.x, emptyLocation.y, domino.rightTerrain), new domain(emptyLocation.x, emptyLocation.y + 1, domino.leftTerrain)]);
+    }
+    if(down.length == 0){
+      placementOptions.push([new domain(emptyLocation.x, emptyLocation.y, domino.rightTerrain), new domain(emptyLocation.x, emptyLocation.y - 1, domino.leftTerrain)]);
+    }
+  });
+  var placeableOptions = [];
+  placementOptions.forEach((option) => {
+    if(canPlace(dominion, option)){
+      placeableOptions.push(option);
+    }
+  });
+  return placeableOptions;
+}
+
+var validPlacements = getValidPlacements(root, randomDomino);
+validPlacements.forEach((placement) => {
+  drawIt(place(root, placement));
+});
