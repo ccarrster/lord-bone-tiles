@@ -1,3 +1,10 @@
+class selectable{
+  constructor(domino){
+    this.domino = domino;
+    this.meeple = null;
+  }
+}
+
 class domino{
   constructor(number, leftTerrain, rightTerrain){
     this.number = number;
@@ -18,11 +25,35 @@ class domain{
     this.terrain = terrain;
   }
 }
+class game{
+  constructor(players, mightyDuel, harmony, middleKingdom){
+    this.players = players;
+    this.mightyDuel = mightyDuel;
+    this.harmony = harmony;
+    this.middleKingdom = middleKingdom;
+  }
+}
+
+var activeDraw = [];
+var nextDraw = [];
+
+function dominoSort(a, b){
+  return a.number - b.number;
+}
+
+function drawDominos(count){
+  var drawnDominos = [];
+  for(var i = 0; i < count; i++){
+    drawnDominos.push(takeRandomDomino());
+  }
+  drawnDominos.sort(dominoSort);
+  return drawnDominos;
+}
 
 /********************* Domino setup and test */
 
 
-var terrainTypes = ['wheat fields', 'forests', 'lakes', 'grasslands', 'swamps', 'mines'];
+//var terrainTypes = ['wheat fields', 'forests', 'lakes', 'grasslands', 'swamps', 'mines'];
 
 function resetDominos(){
   var index = 1;
@@ -80,8 +111,10 @@ function resetDominos(){
 
 var dominos = resetDominos();
 
-//console.log(dominos);
+drawDominos(4);
 
+//console.log(dominos);
+/*
 dominos.forEach((domino) => {
 	//console.log(domino);
 	if(!terrainTypes.includes(domino.leftTerrain.terrain)){
@@ -98,13 +131,13 @@ dominos.forEach((domino) => {
 	counts[domino.leftTerrain.terrain][domino.leftTerrain.crowns]++
 	counts[domino.rightTerrain.terrain][domino.rightTerrain.crowns]++
 })
-
+*/
 //console.log(counts);
 
-var csv = '';
-dominos.forEach((domino) => {
-	csv += domino.number + ", '" + domino.leftTerrain.terrain + "', " + domino.rightTerrain.crowns + ", '" + domino.rightTerrain.terrain + "', " + domino.rightTerrain.crowns + "\n";
-})
+//var csv = '';
+//dominos.forEach((domino) => {
+//	csv += domino.number + ", '" + domino.leftTerrain.terrain + "', " + domino.rightTerrain.crowns + ", '" + domino.rightTerrain.terrain + "', " + domino.rightTerrain.crowns + "\n";
+//})
 
 //console.log(csv);
 
@@ -117,46 +150,37 @@ function resetPlayerDomain(){
   return [new domain(0, 0, new terrain('castle'))];
 }
 
-var testDomino = dominos[0];
-
-var newDomains = [new domain(1, 0, testDomino.leftTerrain), new domain(2, 0, testDomino.rightTerrain)];
-
-var result;
-
-result = place(root, newDomains);
-if(result != false){
-  root = result;
-}
-
-
-var testDomino2 = dominos[46];
-
-var newDomains2 = [new domain(-2, 0, testDomino2.leftTerrain), new domain(-1, 0, testDomino2.rightTerrain)];
-
-result = place(root, newDomains2);
-if(result != false){
-  root = result;
-}
-
-
-var testDomino3 = dominos[1];
-
-var newDomains3 = [new domain(2, 1, testDomino3.leftTerrain), new domain(1, 1, testDomino3.rightTerrain)];
-
-result = place(root, newDomains3);
-if(result != false){
-  root = result;
-}
-
-function place(domains, newDomains){
-  if(canPlace(domains, newDomains)){
+function place(domains, newDomains, maxSize){
+  if(canPlace(domains, newDomains, maxSize)){
     return domains.concat(newDomains);
   } else {
     return false;
   }
 }
 
-function canPlace(existingDomains, newDomains){
+var colors = ['pink', 'green', 'blue', 'yellow'];
+
+function getRandomPlayers(players){
+  return players[Math.floor(Math.random() * players.length)];
+}
+
+function getMeeples(colors){
+  var meeples = [];
+  if(colors.length == 2){
+    colors.forEach((color) => {
+      meeples.push(color);
+      meeples.push(color);
+    });
+  } else {
+    colors.forEach((color) => {
+      meeples.push(color);
+    });
+  }
+}
+
+console.log(getRandomPlayers(colors));
+
+function canPlace(existingDomains, newDomains, maxSize){
   //Optional 7 in some game modes
   var maxSize = 5;
   var lowestX = 100;
@@ -253,7 +277,7 @@ function drawIt(domains){
           color = 'blue';
         }
         if(setDomain[0].terrain.terrain == 'grasslands'){
-          color = 'green';
+          color = 'lime';
         }
         if(setDomain[0].terrain.terrain == 'swamps'){
           color = 'brown';
@@ -284,7 +308,7 @@ function drawIt(domains){
   document.getElementById('domains').appendChild(divnode);
 }
 
-drawIt(root);
+//drawIt(root);
 
 function score(domain){
   var scoreSummary = [];
@@ -344,14 +368,12 @@ function clearVisisted(domain){
   }) 
 }
 
-console.log(score(root));
+//console.log(score(root));
 
 function takeRandomDomino(){
   var result = dominos.splice(Math.floor(Math.random() * dominos.length), 1);
   return result[0];
 }
-
-
 
 class locationXY{
   constructor(x, y){
@@ -360,11 +382,9 @@ class locationXY{
   }
 }
 
-function getValidPlacements(dominion, domino){
+function getValidPlacements(dominion, domino, maxSize){
   var emptyAdjacentLeft = [];
   var emptyAdjacentRight = [];
-  var placementLeft = [];
-  var placementRight = [];
   dominion.forEach((dominionTile) => {
     if(dominionTile.terrain.terrain == domino.leftTerrain.terrain || dominionTile.terrain.terrain == 'castle'){
       console.log('Left will match sides with ' + dominionTile.terrain.terrain + ' ' + dominionTile.x + ', ' + dominionTile.y);
@@ -444,12 +464,84 @@ function getValidPlacements(dominion, domino){
   });
   var placeableOptions = [];
   placementOptions.forEach((option) => {
-    if(canPlace(dominion, option)){
+    if(canPlace(dominion, option, maxSize)){
       placeableOptions.push(option);
     }
   });
   return placeableOptions;
 }
+
+function getScoreTotal(scores){
+  var total = 0;
+  scores.forEach((score) => {
+    total += (score.count * score.crowns);
+  });
+  return total;
+}
+
+function getLargestTerritory(scores){
+  var largest = 0;
+  scores.forEach((score) => {
+    if(score.count > largest){
+      largest = score.count;
+    }
+  });
+  return largest;
+}
+
+function isHarmony(domain, maxSize){
+  if(maxSize == 5){
+    if(domain.length == 25){
+      return true;
+    }
+  }
+  if(maxSize == 7){
+    if(domain.length == 49){
+      return true;
+    }
+  }
+  return false;
+}
+
+function isMiddleKingdom(domain, maxSize){
+  var smallestX = 100;
+  var largestX = -100;
+  var smallestY = 100;
+  var largestY = -100;
+  domain.forEach((domainTile) => {
+    if(domainTile.x < smallestX){
+      smallestX = domainTile.x;
+    }
+    if(domainTile.x > largestX){
+      largestX = domainTile.x;
+    }
+    if(domainTile.y < smallestY){
+      smallestY = domainTile.y;
+    }
+    if(domainTile.y > largestY){
+      largestY = domainTile.y;
+    }
+  });
+  if(maxSize == 5){
+      if(smallestX == -2 && largestX == 2 && smallestY == -2 && largestY == 2){
+        return true;
+      } else {
+        return false;
+      }
+  }
+  if(maxSize == 7){
+    if(smallestX == -3 && largestX == 3 && smallestY == -3 && largestY == 3){
+      return true;
+    } else {
+      return false;
+    }
+  }
+  //Should not be here
+  return false;
+}
+
+//console.log(getScoreTotal(newScore));
+//console.log(getLargestTerritory(newScore));
 
 
 while(dominos.length > 0){
@@ -467,13 +559,5 @@ while(dominos.length > 0){
 
 var newScore = score(root);
 console.log(newScore);
-
-function getScoreTotal(scores){
-  var total = 0;
-  scores.forEach((score) => {
-    total += (score.count * score.crowns);
-  });
-  return total;
-}
-
-console.log(getScoreTotal(newScore));
+console.log(isHarmony(root, 5));
+console.log(isMiddleKingdom(root, 5));
