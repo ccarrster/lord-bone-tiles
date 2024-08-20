@@ -351,8 +351,7 @@ function takeRandomDomino(){
   return result[0];
 }
 
-//This takes from the dominos
-var randomDomino = takeRandomDomino();
+
 
 class locationXY{
   constructor(x, y){
@@ -452,7 +451,29 @@ function getValidPlacements(dominion, domino){
   return placeableOptions;
 }
 
-var validPlacements = getValidPlacements(root, randomDomino);
-validPlacements.forEach((placement) => {
-  drawIt(place(root, placement));
-});
+
+while(dominos.length > 0){
+  //This takes from the dominos
+  var randomDomino = takeRandomDomino();
+  var validPlacements = getValidPlacements(root, randomDomino);
+  if(validPlacements.length > 0){
+    var randomPlacement = validPlacements[Math.floor(Math.random() * validPlacements.length)];
+    root = place(root, randomPlacement);
+    drawIt(root);
+  } else {
+    console.log('No valid placements :(');
+  }
+}
+
+var newScore = score(root);
+console.log(newScore);
+
+function getScoreTotal(scores){
+  var total = 0;
+  scores.forEach((score) => {
+    total += (score.count * score.crowns);
+  });
+  return total;
+}
+
+console.log(getScoreTotal(newScore));
