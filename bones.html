@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .domino{
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+            }
+        </style>
+        <title>Lord Bone Tiles</title>
+        <script>
+            var humans = 0;
+            var computers = 0;
+            var optionMightyDuel = false;
+            var optionHarmony = false;
+            var optionMiddlekingdom = false;
+            var optionDynasty = false;
+            var domains = [];
+
+            function playersChanged(){
+                var playerElements = [];
+                humans = 0;
+                computers = 0;
+                playerElements.push(document.getElementsByName("player1"));
+                playerElements.push(document.getElementsByName("player2"));
+                playerElements.push(document.getElementsByName("player3"));
+                playerElements.push(document.getElementsByName("player4"));
+                
+                playerElements.forEach((nodelist) => {
+                    nodelist.forEach((node) => {
+                        if(node.checked == true){
+                            if(node.value == 'human'){
+                                humans += 1;
+                            }
+                            if(node.value == 'computer'){
+                                computers += 1;
+                            }
+                        }
+                    });
+                });
+                var mightyElement = document.getElementById('mightyduel');
+                if(humans + computers > 2){
+                    mightyElement.checked = false;
+                    mightyElement.disabled = true;
+                } else {
+                    mightyElement.disabled = false;
+                }
+            }
+
+            var newDominos = [];
+            var meeples = [];
+            var playerColors = [];
+            var selectables = [];
+            var turn = '';
+
+            function startGame(){
+                playersChanged();
+                //Hide config
+                document.getElementById("options").hidden = true;
+                //Set options
+                optionMightyDuel = document.getElementById('mightyduel').checked;
+                optionHarmony = document.getElementById('harmony').checked;
+                optionMiddlekingdom = document.getElementById('middlekingdom').checked;
+                optionDynasty = document.getElementById('dynasty').checked;
+
+                console.log(humans);
+                var colorIndex = 0;
+                for(var i = 0; i < humans; i++){
+                    domains.push(new player(resetPlayerDomain(), colors[colorIndex++]));
+                }
+                for(var j = 0; j < computers; j++){
+                    domains.push(new player(resetPlayerDomain(), colors[colorIndex++]));
+                }
+                
+                drawDomains(domains);
+
+                newDominos = drawDominos(4);
+                selectables = [];
+                playerColors = [];
+                newDominos.forEach((domino) => {
+                    var select = new selectable(domino);
+                    selectables.push(select);
+                });
+                domains.forEach((domain) => {
+                    playerColors.push(domain.color);
+                });
+                meeples = getMeeples(playerColors);
+                turn = drawRandomMeeple(meeples);
+                console.log(turn + ' choose a domino');
+                var dominoString = getDominosString(selectables, turn);
+                document.getElementById('domains').innerHTML = dominoString;
+                //xxx
+            }
+
+            function refreshDominos(){
+                var dominoString = getDominosString(selectables, turn);
+                document.getElementById('domains').innerHTML = dominoString;
+            }
+
+            function setMeeple(index, newColor){
+                selectables[index].meeple = newColor;
+                turn = drawRandomMeeple(meeples);
+                console.log(turn + ' choose a domino');
+                refreshDominos();
+            }
+
+            function drawRandomMeeple(meeples){
+                var chooseTurn = getRandomPlayers(meeples);
+                meeples.splice(meeples.indexOf(chooseTurn), 1);
+                return chooseTurn;
+            }
+
+            function drawDomains(domains){
+                var domainIndex = 1;
+                domains.forEach((domain) => {
+                    var result = drawIt(domain.domain);
+                    document.getElementById('domain'+domainIndex++).innerHTML = '<div style="border: 4px solid ' + domain.color + ';">' + result + '</div>';
+                });
+            }
+
+            function getDominoString(domino){
+                var result = "";
+                result += "<div class='domino' style='background-color: " + terrainToColor(domino.leftTerrain.terrain) + "'>";
+                result += domino.leftTerrain.crowns;
+                result += "</div>"
+                result += "<div class='domino' style='background-color: " + terrainToColor(domino.rightTerrain.terrain) + "'>";
+                result += domino.rightTerrain.crowns;
+                result += "</div>";
+                return result;
+            }
+
+            function getMeepleString(dominoIndex, color, newColor = false){
+                if(color == null){
+                    if(newColor){
+                        return '<button onclick="setMeeple(' + dominoIndex + ', \''+newColor+'\')">Choose</button>';
+                    } else {
+                        return '';
+                    }
+                } else {
+                    return color;
+                }
+            }
+
+            function getDominosString(selectables, newColor){
+                var selectableString = '<div>';
+                    selectableString += '<table>';
+                    var dominoIndex = 0;
+                    selectables.forEach((selectable) => {
+                        selectableString += '<tr>';
+                            selectableString += '<td>';
+                            selectableString += getDominoString(selectable.domino);
+                            selectableString += '</td>';
+                            selectableString += '<td>';
+                            selectableString += getMeepleString(dominoIndex, selectable.meeple, newColor);
+                            selectableString += '</td>';
+                        selectableString += '</tr>';
+                        dominoIndex += 1;
+                    });
+                    selectableString += '</table>';
+                selectableString += '</div>';
+                return selectableString;
+            }
+
+            function resetOptions(){
+                document.getElementById("player1Default").checked = true;
+                document.getElementById("player2Default").checked = true;
+                document.getElementById("player3Default").checked = true;
+                document.getElementById("player4Default").checked = true;
+                playersChanged();
+                document.getElementById('mightyduel').checked = false;
+                document.getElementById('harmony').checked = false;
+                document.getElementById('middlekingdom').checked = false;
+                document.getElementById('dynasty').checked = false;
+            }
+        </script>
+    </head>
+    <body>
+        <div id="options">
+            <div>
+                Player 1
+                Human <input id="player1Default" type="radio" name="player1" value="human" checked onchange="playersChanged()">
+                Computer <input type="radio" name="player1" value="computer" onchange="playersChanged()">
+            </div>
+            <div>
+                Player 2
+                Human <input type="radio" name="player2" value="human" onchange="playersChanged()">
+                Computer <input id="player2Default" type="radio" name="player2" value="computer" checked onchange="playersChanged()">
+            </div>
+            <div>
+                Player 3
+                Human <input type="radio" name="player3" value="human" onchange="playersChanged()">
+                Computer <input type="radio" name="player3" value="computer" onchange="playersChanged()">
+                None <input id="player3Default" type="radio" name="player3" value="none" checked onchange="playersChanged()">
+            </div>
+            <div>
+                Player 4
+                Human <input type="radio" name="player4" value="human" onchange="playersChanged()">
+                Computer <input type="radio" name="player4" value="computer" onchange="playersChanged()">
+                None <input id="player4Default" type="radio" name="player4" value="none" checked onchange="playersChanged()">
+            </div>
+            <div>
+                The Mighty Duel (7x7 instead of 5x5)
+                <input id="mightyduel" type="checkbox" name="mightyduel">
+            </div>
+            <div>
+                Harmony (full grid 5 points)
+                <input id="harmony" type="checkbox" name="harmony">
+            </div>
+            <div>
+                Middle Kingdom (castle middle 10 points)
+                <input id="middlekingdom" type="checkbox" name="middlekingdom">
+            </div>
+            <div>
+                Dynasty (best of 3 games)
+                <input id="dynasty" type="checkbox" name="dynasty">
+            </div>
+            <div>
+                <button onclick="startGame()">Start Game</button>
+                <button onclick="resetOptions()">Reset</button>
+            </div>
+
+        </div>
+        <div id="game">
+            <div id="dominosNow"></div>
+            <div id="dominosNext"></div>
+        </div>
+        <div id="domains">
+            <div id="domain1">
+
+            </div>
+            <div id="domain2">
+
+            </div>
+            <div id="domain3">
+
+            </div>
+            <div id="domain4">
+
+            </div>
+        </div>
+    </body>
+    <script src="bones.js"></script>
+</html>
