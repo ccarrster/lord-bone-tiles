@@ -19,10 +19,11 @@ class terrain{
   }
 }
 class domain{
-  constructor(x, y, terrain){
+  constructor(x, y, terrain, color){
     this.x = x;
     this.y = y;
     this.terrain = terrain;
+    this.color = color;
   }
 }
 class game{
@@ -31,6 +32,12 @@ class game{
     this.mightyDuel = mightyDuel;
     this.harmony = harmony;
     this.middleKingdom = middleKingdom;
+  }
+}
+class player{
+  constructor(domain, color){
+    this.domain = domain;
+    this.color = color;
   }
 }
 
@@ -111,7 +118,7 @@ function resetDominos(){
 
 var dominos = resetDominos();
 
-drawDominos(4);
+//drawDominos(4);
 
 //console.log(dominos);
 /*
@@ -144,7 +151,7 @@ dominos.forEach((domino) => {
 
 //****************** Domains */
 
-var root = resetPlayerDomain();
+//var root = resetPlayerDomain();
 
 function resetPlayerDomain(){
   return [new domain(0, 0, new terrain('castle'))];
@@ -176,9 +183,10 @@ function getMeeples(colors){
       meeples.push(color);
     });
   }
+  return meeples;
 }
 
-console.log(getRandomPlayers(colors));
+//console.log(getRandomPlayers(colors));
 
 function canPlace(existingDomains, newDomains, maxSize){
   //Optional 7 in some game modes
@@ -258,6 +266,32 @@ function canPlace(existingDomains, newDomains, maxSize){
   }
 }
 
+function terrainToColor(terrain){
+  var color = 'white';
+  if(terrain == 'forests'){
+    color = 'darkgreen';
+  }
+  if(terrain == 'lakes'){
+    color = 'blue';
+  }
+  if(terrain == 'grasslands'){
+    color = 'lime';
+  }
+  if(terrain == 'swamps'){
+    color = 'brown';
+  }
+  if(terrain == 'mines'){
+    color = 'orange';
+  }
+  if(terrain == 'wheat fields'){
+    color = 'yellow';
+  }
+  if(terrain == 'castle'){
+    color = 'gray';
+  }
+  return color;
+}
+
 function drawIt(domains){
   var result = '<table>';
   for(var y = -6; y < 7; y++){
@@ -270,27 +304,7 @@ function drawIt(domains){
       });
       var color = 'white';
       if(setDomain.length > 0){
-        if(setDomain[0].terrain.terrain == 'forests'){
-          color = 'darkgreen';
-        }
-        if(setDomain[0].terrain.terrain == 'lakes'){
-          color = 'blue';
-        }
-        if(setDomain[0].terrain.terrain == 'grasslands'){
-          color = 'lime';
-        }
-        if(setDomain[0].terrain.terrain == 'swamps'){
-          color = 'brown';
-        }
-        if(setDomain[0].terrain.terrain == 'mines'){
-          color = 'orange';
-        }
-        if(setDomain[0].terrain.terrain == 'wheat fields'){
-          color = 'yellow';
-        }
-        if(setDomain[0].terrain.terrain == 'castle'){
-          color = 'gray';
-        }
+        color = terrainToColor(setDomain[0].terrain.terrain);
       }
       result += '<td style="width: 20px; height: 20px; border: 1px solid black; background-color: '+color+'">';
       if(setDomain.length > 0){
@@ -302,10 +316,7 @@ function drawIt(domains){
     }
     result += '</tr>';
   }
-
-  const divnode = document.createElement("div");
-  divnode.innerHTML = result;
-  document.getElementById('domains').appendChild(divnode);
+  return result;
 }
 
 //drawIt(root);
@@ -544,6 +555,7 @@ function isMiddleKingdom(domain, maxSize){
 //console.log(getLargestTerritory(newScore));
 
 
+/*
 while(dominos.length > 0){
   //This takes from the dominos
   var randomDomino = takeRandomDomino();
@@ -556,8 +568,4 @@ while(dominos.length > 0){
     console.log('No valid placements :(');
   }
 }
-
-var newScore = score(root);
-console.log(newScore);
-console.log(isHarmony(root, 5));
-console.log(isMiddleKingdom(root, 5));
+*/
