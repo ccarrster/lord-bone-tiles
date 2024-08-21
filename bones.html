@@ -93,6 +93,19 @@
                 //xxx
             }
 
+            var newSelectables = [];
+
+            function getNextDominos(){
+                var nextDominos = drawDominos(4);
+                newSelectables = [];
+                nextDominos.forEach((domino) => {
+                    var select = new selectable(domino);
+                    newSelectables.push(select);
+                });
+                var dominoString = getDominosString(newSelectables);
+                document.getElementById('domains2').innerHTML = dominoString;
+            }
+
             function refreshDominos(){
                 var dominoString = getDominosString(selectables, turn);
                 document.getElementById('domains').innerHTML = dominoString;
@@ -101,6 +114,10 @@
             function setMeeple(index, newColor){
                 selectables[index].meeple = newColor;
                 turn = drawRandomMeeple(meeples);
+                if(turn == undefined){
+                    console.log('No more meeples!');
+                    getNextDominos();
+                }
                 console.log(turn + ' choose a domino');
                 refreshDominos();
             }
@@ -239,6 +256,7 @@
 
             </div>
         </div>
+        <div id="domains2"></div>
     </body>
     <script src="bones.js"></script>
 </html>
